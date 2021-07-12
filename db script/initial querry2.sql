@@ -1,4 +1,7 @@
-/****** Object:  Database [Epam.Shops]    Script Date: 08.07.2021 19:34:20 ******/
+USE [master]
+GO
+
+/****** Object:  Database [Epam.Shops]    Script Date: 12.07.2021 16:23:53 ******/
 CREATE DATABASE [Epam.Shops]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -110,10 +113,12 @@ GO
 ALTER DATABASE [Epam.Shops] SET  READ_WRITE 
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Adresses]    Script Date: 08.07.2021 19:36:26 ******/
+/****** Object:  Table [dbo].[Adresses]    Script Date: 12.07.2021 16:24:44 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -133,10 +138,12 @@ CREATE TABLE [dbo].[Adresses](
 ) ON [PRIMARY]
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Roles]    Script Date: 08.07.2021 19:36:43 ******/
+/****** Object:  Table [dbo].[Roles]    Script Date: 12.07.2021 16:25:09 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -153,10 +160,12 @@ CREATE TABLE [dbo].[Roles](
 ) ON [PRIMARY]
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Shop_Types]    Script Date: 08.07.2021 19:36:58 ******/
+/****** Object:  Table [dbo].[Shop_Types]    Script Date: 12.07.2021 16:25:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -173,10 +182,12 @@ CREATE TABLE [dbo].[Shop_Types](
 ) ON [PRIMARY]
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Store_Chains]    Script Date: 08.07.2021 19:37:20 ******/
+/****** Object:  Table [dbo].[Store_Chains]    Script Date: 12.07.2021 16:25:54 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -189,15 +200,21 @@ CREATE TABLE [dbo].[Store_Chains](
  CONSTRAINT [PK_Store_Chains] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [AK_Name] UNIQUE NONCLUSTERED 
+(
+	[name] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Users]    Script Date: 08.07.2021 19:37:58 ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 12.07.2021 16:26:10 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -206,14 +223,14 @@ GO
 
 CREATE TABLE [dbo].[Users](
 	[username] [nvarchar](50) NOT NULL,
-	[password] [nvarchar](50) NOT NULL,
-	[email] [nvarchar](50) NOT NULL,
+	[password] [nvarchar](max) NOT NULL,
+	[email] [nvarchar](50) NULL,
 	[role] [int] NOT NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
 	[username] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
 ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_Roles] FOREIGN KEY([role])
@@ -225,10 +242,12 @@ GO
 ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_Roles]
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Shops]    Script Date: 08.07.2021 19:38:31 ******/
+/****** Object:  Table [dbo].[Shops]    Script Date: 12.07.2021 16:27:39 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -278,10 +297,12 @@ GO
 ALTER TABLE [dbo].[Shops] CHECK CONSTRAINT [FK_Shops_Store_Chains]
 GO
 
+
+
 USE [Epam.Shops]
 GO
 
-/****** Object:  Table [dbo].[Reviews]    Script Date: 08.07.2021 19:38:40 ******/
+/****** Object:  Table [dbo].[Reviews]    Script Date: 12.07.2021 16:28:02 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -289,7 +310,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Reviews](
-	[id] [int] IDENTITY (1,1) not NULL,
+	[id] [int] IDENTITY(1,1) NOT NULL,
 	[shop_id] [int] NOT NULL,
 	[username] [nvarchar](50) NULL,
 	[review_text] [text] NOT NULL,
@@ -318,6 +339,8 @@ GO
 
 ALTER TABLE [dbo].[Reviews] CHECK CONSTRAINT [FK_Reviews_Users]
 GO
+
+
 
 insert Roles Values ('admin')
 insert Roles Values ('user')
